@@ -16,9 +16,10 @@ COPY requirements.txt .
 # --no-cache-dir 减小镜像体积
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 预下载 rembg 模型 (u2net) 到默认目录
+# 预下载 rembg 模型 (u2netp) 到默认目录
 # 这样容器启动时不需要联网下载模型，加快启动速度
-RUN python -c "from rembg.session_factory import new_session; new_session('u2net')"
+# u2netp 是轻量级模型，更适合云端部署
+RUN python -c "from rembg.session_factory import new_session; new_session('u2netp')"
 
 # 复制其余代码
 COPY . .

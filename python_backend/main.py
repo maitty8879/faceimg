@@ -1,11 +1,16 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from rembg import remove
+from rembg import remove, new_session
 from PIL import Image
 import io
 import uvicorn
 
 app = FastAPI()
+
+# Initialize session with u2netp (lightweight model) globally to save memory/time
+# This is crucial for cloud deployments with limited resources (like Zeabur free tier)
+model_name = "u2netp"
+session = new_session(model_name)
 
 # Allow CORS for Next.js frontend (usually localhost:3000)
 app.add_middleware(
@@ -31,7 +36,8 @@ async def remove_background(file: UploadFile = File(...)):
         
         # Process with rembg
         # rembg expects bytes and returns bytes
-        output_data = remove(contents)
+        # Use the global session (u2netp)
+        output_data = remove(contents, session=session)
         
         # Verify it's a valid image (optional but good for debugging)
         # image = Image.open(io.BytesIO(output_data))
