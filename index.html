@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmojiGen - 表情包生成器</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入 Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="background-mesh"></div>
+    <div class="glass-overlay"></div>
+
+    <main class="app-container">
+        <!-- 头部区域 -->
+        <header class="app-header">
+            <div class="logo-container">
+                <span class="emoji-logo">🟡</span>
+                <h1>EmojiGen</h1>
+            </div>
+            <p class="subtitle">上传参考 · 选择风格 · AI 专属定制</p>
+        </header>
+
+        <div class="main-grid">
+            <!-- 左侧控制面板 -->
+            <div class="control-panel">
+                
+                <!-- 创意输入卡片 -->
+                <section class="glass-card input-section">
+                    <div class="card-header">
+                        <h2>创意描述</h2>
+                        <span class="hint">支持粘贴/上传参考图</span>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <!-- 隐藏的文件上传 -->
+                        <input type="file" id="poseInput" accept="image/*" hidden>
+                        
+                        <!-- 姿态参考图预览 -->
+                        <div id="posePreviewContainer" class="pose-preview hidden">
+                            <div class="preview-box">
+                                <img id="posePreviewImg" src="" alt="参考图">
+                                <button id="removePoseBtn" class="close-btn" title="删除参考图">
+                                    <i data-lucide="x"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 文本输入 -->
+                        <textarea id="promptInput" placeholder="描述你想要的表情，或者直接粘贴一张图片作为参考..."></textarea>
+                        
+                        <!-- 工具栏 -->
+                        <div class="input-toolbar">
+                            <button id="uploadBtn" class="tool-btn">
+                                <i data-lucide="image"></i>
+                                <span id="uploadBtnText">上传参考图</span>
+                            </button>
+                            <span class="char-count"><span id="charCount">0</span> 字</span>
+                        </div>
+                    </div>
+
+                    <!-- 快捷标签 -->
+                    <div class="quick-prompts">
+                        <p class="label">热门描述</p>
+                        <div class="tags-container" id="quickPromptsContainer">
+                            <!-- JS 动态生成 -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 风格选择卡片 -->
+                <section class="glass-card style-section">
+                    <div class="card-header">
+                        <h2>风格参考</h2>
+                        <span class="hint"><span id="styleCount">0</span>/4</span>
+                    </div>
+                    <div class="style-grid" id="styleGrid">
+                        <!-- JS 动态生成 -->
+                    </div>
+                </section>
+
+                <!-- 操作按钮 -->
+                <div class="action-bar">
+                    <button id="generateBtn" class="primary-btn">
+                        <i data-lucide="sparkles"></i>
+                        <span>生成表情包</span>
+                        <span id="generatingCountBadge" class="badge hidden">0</span>
+                    </button>
+                    <button id="resetBtn" class="secondary-btn" title="重置输入">
+                        <i data-lucide="rotate-ccw"></i>
+                    </button>
+                </div>
+                
+            </div>
+
+            <!-- 右侧结果展示 -->
+            <div class="results-panel glass-card">
+                <div class="card-header">
+                    <h2>生成结果</h2>
+                    <div class="header-actions">
+                        <span id="resultCount" class="hint hidden">(0)</span>
+                        <button id="clearAllBtn" class="text-btn hidden">清空全部</button>
+                    </div>
+                </div>
+
+                <div id="resultsGrid" class="results-grid empty">
+                    <!-- 空状态 -->
+                    <div class="empty-state">
+                        <div class="emoji-icon">🎨</div>
+                        <p>等待生成</p>
+                        <span>选择参考或输入描述后点击生成</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="app-footer">
+            Designed by Dudu · Static Version
+        </footer>
+    </main>
+
+    <!-- 大图预览模态框 -->
+    <div id="imageModal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content glass-card">
+            <button id="closeModalBtn" class="close-modal-btn">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="modal-image-container">
+                <img id="modalImage" src="" alt="预览图">
+            </div>
+            <div class="modal-footer">
+                <p id="modalPrompt" class="modal-prompt">Prompt text</p>
+                <button id="downloadBtn" class="download-btn">
+                    <i data-lucide="download"></i>
+                    <span>保存图片</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
